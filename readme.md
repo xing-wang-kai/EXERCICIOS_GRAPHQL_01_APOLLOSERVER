@@ -71,4 +71,63 @@ Após importa o código informamos o mesmo da seguinte maneira.
 
     const typeDefs = mergeTypeDefs[userTypeDefs, produtosTypeDefs]
 ```
+
+## :cherry_blossom: USANDO DATASOURCES
+
+quando usamos dados de alguma origem podemo usar datasources para instanciar as informações dos dados e puxar eles de sua origem com o esquema.
+- [x] npm install apollo-datasources-rest
+
 :speech_balloon:
+
+```javascript
+const { RESTDatasources } = require('apollo-resources-rest');
+
+class userAPI extends RESTDatasources {
+    constructor(){
+        super()
+        this.baseURL = "http://localhost:3000"
+    }
+    async getUsers(){
+        return this.get('/users')
+
+    }
+}
+
+module.exports = userAPI;
+
+```
+
+uma vez definido o datasources então chamamos o mesmo como parametro do apollo server:
+
+```javascript
+///imports
+const UsersAPI = require('./user/datasource/User.js')
+
+/*demais código*/
+
+const server = new ApolloServer({
+    typeDefs, 
+    resolvers,
+    dataSources: ()=>{
+        return {
+            UsersAPI: new UsersAPI()
+        }
+    }})
+
+```
+
+## :cherry_blossom: CRIANDO RESOLVERS FUNCIONAIS
+
+Para fazer a ação dos resolver integrarem com a API confome desejarmos precisamos dizer ao resolver o que ele vai buscar e comparar, lembrando que as queres devem serguir parametros entre resolvers e typeDefs...
+
+:speech_balloon:
+
+```javascript
+const userResolver = {
+    query: {
+        users: (root, args, {dataSources}, info) => dataSources.UserAPI.getUsers
+    }
+}
+```
+:speech_balloon:
+
