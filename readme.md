@@ -125,9 +125,68 @@ Para fazer a ação dos resolver integrarem com a API confome desejarmos precisa
 ```javascript
 const userResolver = {
     query: {
-        users: (root, args, {dataSources}, info) => dataSources.UserAPI.getUsers
+        users: (root, args, {dataSources}, info) => dataSources.UserAPI.getUsers(),
     }
 }
+```
+
+## INTEGRANDO COM DATASOURCES
+
+usando o DataSources podemos integrar ainda mais com uma API banco de dados, json ou demais origens, para isso podemos adicionar outro campo dentro do userSchema chamado Role que retorna outro json..
+
+```javascript
+const { gql } = require('apollo-server');
+
+        const userSchema = gql`
+            type User {
+                id: ID!
+                nome: String!
+                ativo: Boolean!
+                email: String
+                role: Role!
+            }
+            type Role {
+                id: ID!
+                type: String!
+            }
+            type Query {
+                users: [User]
+                user(id: ID!): User!
+            }
+
+        `
+```
+
+O código acima usamos os Query para definir o tipo de method que sera usado no resolvers..
+para envocar este metodo em datasource então executamos.
+
+```javascript
+
+const { RESTDataSources } = require('apollo-datasource-rest');
+
+class UserAPI extends RESTDataSources{
+    constructor(){
+        super();
+        this.baseURL = "http://localhost:3000"
+    }
+    async getUsers(){
+        const user = await this.get('/users');
+        return user.map((user)=>({
+            id: user.id,
+            nome: user.nome,
+            ativo: user.ativo,
+            email: user.email,
+            role: return await this.get(`/roles/${user.role}`) 
+
+        }))
+    }
+    async getUser(id){
+        const user = await get(`/users/${id}`)
+        user.role= await get(`/roles/${user.role}`)
+        return user
+    }
+}
+
 ```
 :speech_balloon:
 

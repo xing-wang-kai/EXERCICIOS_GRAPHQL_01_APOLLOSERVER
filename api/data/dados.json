@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "id": 2,
+      "id": 1,
       "nome": "Ana Torre",
       "ativo": true,
       "email": "a@a.com",
@@ -41,6 +41,13 @@
       "ativo": true,
       "email": "m@m.com",
       "role": 2
+    },
+    {
+      "nome": "kai Wang",
+      "ativo": true,
+      "email": "l@l.com",
+      "role": 1,
+      "id": 7
     }
   ],
   "roles": [
