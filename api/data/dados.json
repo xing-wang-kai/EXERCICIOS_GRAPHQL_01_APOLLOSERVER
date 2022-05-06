@@ -9,10 +9,10 @@
     },
     {
       "id": 2,
-      "nome": "Gabriel Costa",
+      "nome": "Afonso mendeiros",
       "ativo": true,
-      "email": "g@g.com",
-      "role": 1
+      "email": "A@a.com",
+      "role": 3
     },
     {
       "id": 3,
@@ -36,17 +36,18 @@
       "role": 2
     },
     {
-      "id": 6,
-      "nome": "Marcia Silva",
+      "nome": "Afonso mendeiros",
       "ativo": true,
-      "email": "m@m.com",
-      "role": 2
+      "email": "A@a.com",
+      "role": 3,
+      "id": 6
     },
     {
       "nome": "kai Wang",
       "ativo": true,
       "email": "l@l.com",
       "role": 1,
+      "createdAt": "2022-05-10T00:00:00.000Z",
       "id": 7
     }
   ],
