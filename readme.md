@@ -500,3 +500,16 @@ async editarUser({id, user}){
         return {...user, role: role[0]}
     }
 ```
+
+## :cherry_blossom: CRIANDO mergeTypeDefs
+
+Quando usamos o GraphQl e queremos adicionar mais de um schema precisamos usar o MergeTypeDefs importdos de GraphQl-tools
+- [x] npm install graphql-tools
+
+:coffee:
+
+```javascript
+const { mergeTypeDefs } = require('@graphql-tools/merge');
+
+const UserTypeDefs = mergeTypeDefs([userSchema, turmaSchema])
+```
