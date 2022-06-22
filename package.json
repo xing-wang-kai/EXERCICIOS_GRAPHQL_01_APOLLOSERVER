@@ -1,7 +1,7 @@
 {
-  "name": "roteiro",
+  "name": "API COM GRAPHQL",
   "version": "1.0.0",
-  "description": "",
+  "description": "Uso de GraphQL para executar requisições no banco de dados com SQLlite para o tipo de dados relacionados de um para muitos de um para um ou de muitos para um.",
   "main": "index.js",
   "scripts": {
     "start": "nodemon -e js,json,graphql ./api/index.js",
@@ -9,16 +9,16 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alura-cursos/1922-graphql.git"
+    "type": "",
+    "url": ""
   },
   "keywords": [],
-  "author": "",
+  "author": "Kai Wang 王凯❤",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/alura-cursos/1922-graphql/issues"
+    "url": "https://github.com/xing-wang-kai/EXERCICIOS_GRAPHQL_01_APOLLOSERVER"
   },
-  "homepage": "https://github.com/alura-cursos/1922-graphql#readme",
+  "homepage": "https://github.com/xing-wang-kai/EXERCICIOS_GRAPHQL_01_APOLLOSERVER/blob/master/readme.md",
   "dependencies": {
     "apollo-datasource": "^3.3.1",
     "apollo-datasource-rest": "^3.5.2",
