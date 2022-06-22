@@ -1,33 +1,25 @@
-const { GraphQLScalarType } = require('graphql');
+const { GraphQLScalarType } = require("graphql");
 
-const DateTimeOBJ ={
-    name: "DateTime",
-    description: "string de data e hora no romato ISO-8601",
-    serialize: (value) => value.toISOString(),
+const ScalarTypeConfig = {
+    name: 'DateTime',
+    description: "Adequar a data retornada nas normas ISO-8601",
+    serialize: (value) => new Date(value).toISOString(),
     parseValue: (value) => new Date(value),
-    parseLiteral: (ast) => new Date(ast.value)
+    ParseLiteral: (ast) => new Date(ast.value)
 }
 
-const userResolvers ={
-
-    RoleType: {
-        DOCENTE: "DOCENTE",
-        ESTUDANTE: "ESTUDANTE",
-        COORDENACAO: "COORDENACAO"
+const userResolver = {
+    DateTime: new GraphQLScalarType(ScalarTypeConfig),
+    RoleEnum: {DOCENTE: 'DOCENTE', ESTUDANTE: 'ESTUDANTE', COORDENACAO: 'COORDENACAO'},
+    Query: {
+        users: async (root, args, { dataSources }, info) => dataSources.UserAPI.getUsers(),
+        user: async (root, { id }, { dataSources }, info) => dataSources.UserAPI.getUser(id)
     },
-
-    DateTime: new GraphQLScalarType(DateTimeOBJ),
-
-    Query:{
-        users: async (root, args, {dataSources}, info) => dataSources.usersAPI.getUsers(),
-        user: async (root, { id }, {dataSources}, info )=> dataSources.usersAPI.getUserById(id)
-    },
-
     Mutation: {
-        adicionarUser: async (root, { user }, {dataSources}, info ) => dataSources.usersAPI.adicionarUser(user),
-        editarUser: async (root, novoDados, {dataSources}, info) => dataSources.usersAPI.editarUser(novoDados),
-        deletarUser: async (root, { id }, {dataSources}, info) => dataSources.usersAPI.deletarUser(id),
+        createUser: async (root, {user}, { dataSources }, info )=> dataSources.UserAPI.createUser(user),
+        editarUser: async (root, {id, user}, { dataSources }, info) => dataSources.UserAPI.editarUser(id, user),
+        deletarUser: async (root, {id}, { dataSources }, info) => dataSources.UserAPI.deletarUser(id)
     }
 }
 
-module.exports = userResolvers;
+module.exports = userResolver;

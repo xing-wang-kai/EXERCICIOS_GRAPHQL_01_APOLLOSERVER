@@ -1,57 +1,55 @@
-
 const { gql } = require('apollo-server');
 
 const userSchema = gql`
-    scalar DateTime
 
-    enum RoleType{
-        DOCENTE
-        ESTUDANTE
-        COORDENACAO
+    scalar DateTime
+    type User{
+        id: ID!
+        nome: String!
+        ativo: Boolean!
+        email: String!
+        role: Role!
+        createdAt: DateTime
+        matricula: [Matriculas]
     }
     input UserInput{
         nome: String
         ativo: Boolean
         email: String
-        role: RoleType
+        role: RoleEnum
         createdAt: DateTime
     }
-
-    type User {
+    type Role{
         id: ID!
-        nome: String!
-        ativo: Boolean!
-        email: String
-        role: Role!
-        createdAt: DateTime
+        type: RoleEnum!
     }
-    
-    type Role {
-        id: ID!
-        type: RoleType!
+    enum RoleEnum {
+        DOCENTE
+        ESTUDANTE
+        COORDENACAO
     }
-
-    type Query {
-        users: [User]
+    type Query{
+        users: [User]!
         user(id: ID!): User!
     }
     type Mutation {
-        adicionarUser(user: UserInput): User!
-        editarUser(id: ID!, user: UserInput): MessageUpgrade!
-        deletarUser(id: ID!): MessageDeleta!
+        createUser(user: UserInput): User!
+        editarUser(id: ID!, user: UserInput): MessageEditar!
+        deletarUser(id: ID!): MessageDeletar!
     }
-    interface messageCuston {
+    interface Message{
         code: Int!
-        messagem: String!
+        message: String!
     }
-    type MessageDeleta implements messageCuston {
+    type MessageDeletar implements Message {
         code: Int!
-        messagem: String!
+        message: String!
     }
-    type MessageUpgrade implements messageCuston {
+    type MessageEditar implements Message {
         code: Int!
-        messagem: String!
+        message: String!
         user: User!
     }
 `
+
 module.exports = userSchema;

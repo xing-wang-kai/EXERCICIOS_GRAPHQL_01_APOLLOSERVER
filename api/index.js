@@ -1,40 +1,32 @@
+const { ApolloServer } = require('apollo-server');
+const { mergeTypeDefs } = require('@graphql-tools/merge');
+const path = require('path');
 
-const { ApolloServer } = require("apollo-server");
-const { mergeTypeDefs } = require('@graphql-tools/merge')
-const path = require('path')
+const { UserSchema, UserResolver, UserAPI } = require('./user/index.js');
+const { TurmaSchema, TurmaResolver, TurmaAPI } = require('./Turmas/index.js');
+const { MatriculaSchema, MatriculaResolver, MatriculaAPI }= require('./matriculas/index.js');
 
-const userSchema = require('./user/schema/user.graphql');
-const userResolvers = require('./user/resolvers/userResolvers.js');
-const usersAPI = require('./user/datasource/User.js');
-
-const turmaSchema = require('./Tumas/schema/turmas.graphql');
-const turmaResolvers = require('./Tumas/resolvers/turmasResolver.js');
-const TurmasAPI = require('./Tumas/datasource/turmas.js')
-
-
-//caso seja nescessário informar mais de um tipo de 
-const typeDefs = mergeTypeDefs([userSchema, turmaSchema])
-const resolvers = [userResolvers, turmaResolvers]
+const typeDefs = mergeTypeDefs([UserSchema, TurmaSchema, MatriculaSchema])
+const resolvers = [UserResolver, TurmaResolver, MatriculaResolver]
 
 const dbConfig = {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-        filename: path.resolve(__dirname, './data/database.db')
+        filename: path.resolve(__dirname , './data/database.db')
     }
 }
 
 const server = new ApolloServer({
-    typeDefs, 
+    typeDefs,
     resolvers,
-    dataSources: ()=>{
+    dataSources: () =>{
         return {
-            usersAPI: new usersAPI(),
-            turmasAPI: new TurmasAPI(dbConfig)
+            UserAPI: new UserAPI(),
+            TurmaAPI: new TurmaAPI(dbConfig),
+            MatriculasAPI: new MatriculaAPI(dbConfig)
         }
-    }})
-//caso queira especificara porta pode usar em .listen({port: 4001})
-server.listen().then(({url})=>{
-    console.log(`Servidor rodadado na porta ${url}`)
-})
+    }
+ })
 
+server.listen().then(({url})=>console.log(`Conectado com sucesso na porta ${url}`))

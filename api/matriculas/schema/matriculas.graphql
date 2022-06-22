@@ -1,0 +1,43 @@
+const {gql} = require('apollo-server')
+
+const MatriculaSchema = gql`
+    scalar DateTime
+
+    type Matriculas{
+        id: ID!
+        estudante: User
+        turma: Turmas
+        created_at: DateTime!
+        status: String!
+    }
+    input MatriculasInput{
+        estudante: Int
+        turma: Int
+        created_at: DateTime
+        status: String
+    }
+    type Query{
+        matriculas: [Matriculas!]!
+        matricula(id: ID!): Matriculas! 
+    }
+    type Mutation{
+        createMatriculas(matricula: MatriculasInput!): Matriculas!
+        updateMatriculas(id: ID!, matricula: MatriculasInput): MessageUpdate!
+        deleteMatriculas(id: ID!): MessageDelete!
+    }
+    interface Message{
+        code: Int!
+        message: String!
+    }
+    type MessageUpdate implements Message{
+        code: Int!
+        message: String!
+        matricula: Matriculas!
+    }
+    type MessageDelete implements Message{
+        code: Int!
+        message: String!
+    }
+`
+
+module.exports = MatriculaSchema;
