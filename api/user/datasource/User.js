@@ -4,7 +4,7 @@ class UserAPI extends RESTDataSource{
     constructor(){
         super();
         this.baseURL = 'http://localhost:3000';
-        this.message = {code: 200, message: "sucesso!"}
+        this.resposta = {code: 0, message: ""}
     }
     getUsers = async ({page=1, limit=0}) => {
         const query = limit 
@@ -29,19 +29,31 @@ class UserAPI extends RESTDataSource{
     createUser = async (dados) => {
         const users = await this.get('/users');
         dados.id = users.length + 1;
-        const role = await this.get(`/roles?type=${dados.role}`);
-        await this.post('/users', {...dados, role: role[0].id} );
-        return {...dados, role: role[0] }
+        try{
+            let user = await this.getUser(dados.id)
+            while( user.id === dados.id){
+                dados.id ++
+                user = await this.getUser(dados.id)
+            }
+        }catch(err){}finally{
+            const role = await this.get(`/roles?type=${dados.role}`);
+            await this.post('/users', {...dados, role: role[0].id} );
+            return {...dados, role: role[0] }
+        }  
     }
     editarUser = async (id, user) => {
         const role = await this.get(`/roles/?type=${user.role}` );
         await this.put(`/users/${id}`, {...user, role: role[0].id} );
-        return {...this.message, user: {...user, role: role[0]} };
+        this.resposta.code = 201
+        this.resposta.message = `Update no usuário de id = ${id} realizado com sucesso!!`
+        return {...this.resposta, user: {...user, role: role[0]} };
     }
     deletarUser = async (id) => {
         console.log(id)
         await this.delete(`/users/${Number.parseInt(id)}`);
-        return this.message;
+        this.resposta.code = 200
+        this.resposta.message = `Usuário de id = ${id} deletado com sucesso!!`
+        return this.resposta;
     }
 }
 

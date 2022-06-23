@@ -1,3 +1,29 @@
+# PROJETO API GRAPHQL 
+
+Este projeto de API com GRAPHQL tem como objetivo a manutenção de usuário de uma escola de cursos ficticia, a api ultiliza metodos CRUD para realizar requisições e consultas no banco de dados e trazer retornos.
+O usuário poderá cadastra editar consultar e deletar outros usuários, a API também permite cadatro de ROLE com para cada tipo como professores estudantes e cordenadores da instituição, o sistema integrado a outra tabela de TURMAS e MATRICULAS faz a identificação de 1 para muitos de 1 para 1 de muito para muitos, com retornos encadeados em cascata de JSON para todos dados relacionados. Conforme o ESQUEMA:
+
+<img src='api\assets\usergetnv3.png'/>
+
+conforme o esquema da imagem ao executar uma solicitação de busca na query TURMAS o mesmo terá retorno de todos docentes cadastrados em turmas as matriculas e os estudantes viculados a está matriculas.
+
+## metodos
+
+---
+
+<strong> Tabela Representacional </strong>
+
+| GET         | RETURN           | RETURN|
+|-------------|------------------|-------|
+|TURMAS-->    |USER              |       |
+|             |--> MATRICULAS -->|USER   |
+|USER-->      |ROLE              |       |
+|             |--> MATRICULAS -->|TURMAS |
+|MATRICULAS-->|USER              |...    |
+|             |TURMAS            |       |
+|             |                  |       |
+
+
 # :cherry_blossom: GRAPHQL
 
 ## :cherry_blossom: USANDO APOLLO-SERVER
