@@ -18,6 +18,10 @@ const TurmaResolver = {
     createTurma: async (root, {turma}, {dataSources}, info) => dataSources.TurmaAPI.createTurma(turma),
     updateTurma: async (root, {id, turma}, {dataSources}, info) => dataSources.TurmaAPI.updateTurma(id, turma),
     deleteTurma: async (root, id, {dataSources}, info) => dataSources.TurmaAPI.deleteTurma(id)
+  },
+  Turmas: {
+    matricula: async ( root, args, {dataSources}, info) => dataSources.MatriculasAPI.MatriculasByTumaDataLoader.load(root.id),
+    docente_id: async (root, args, {dataSources}, info) => dataSources.UserAPI.getUser(root.docente_id)
   }
 }
 

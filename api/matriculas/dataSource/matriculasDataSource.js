@@ -1,4 +1,5 @@
 const { SQLDataSource } = require('datasource-sql');
+const Dataloader = require('dataloader');
 
 class MatriculasAPI extends SQLDataSource{
     constructor(dbConfig){
@@ -21,13 +22,13 @@ class MatriculasAPI extends SQLDataSource{
         return matricula[0]
 
     }
-    createMatriculas = async (dados) => {
+    createMatriculas = async (matricula) => {
         const novaMatriculaID = await this.db
-                                    .insert(...dados)
+                                    .insert({...matricula})
                                     .into('matriculas')
                                     .returning('id')
         const novaMatricula = await this.getMatriculasById(novaMatriculaID[0])
-        return {...novaMatricula}
+        return { ...novaMatricula }
     }
     updateMatriculas = async (id, matricula) => {
         await this.db
@@ -49,6 +50,23 @@ class MatriculasAPI extends SQLDataSource{
         this.message.message = "matricula deletada com sucesso!!";
         return this.message;
     }
+
+    MatriculasByTumaDataLoader = new Dataloader(this.getMatriculaByTurma.bind(this))
+
+    async getMatriculaByTurma(Turmaid){
+        const matriculas = await this.db.select("*").from('matriculas').whereIn("turma_id", Turmaid)
+        const array = Turmaid.map(id => matriculas.filter(matricula => matricula.turma_id === id))
+        return array
+    }
+    MatriculasByUserDataloader = new Dataloader(this.getMatriculaByUsers.bind(this))
+
+    async getMatriculaByUsers(UserID){
+        console.log(UserID)
+        const matriculas = await this.db.select("*").from('matriculas').whereIn("estudante_id", UserID)
+        const array = UserID.map(id => matriculas.filter(matricula=>matricula.estudante_id === id))
+        return array
+    }
+    
 }
 
 module.exports = MatriculasAPI;

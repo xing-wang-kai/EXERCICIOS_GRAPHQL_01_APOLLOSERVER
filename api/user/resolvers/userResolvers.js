@@ -12,13 +12,16 @@ const userResolver = {
     DateTime: new GraphQLScalarType(ScalarTypeConfig),
     RoleEnum: {DOCENTE: 'DOCENTE', ESTUDANTE: 'ESTUDANTE', COORDENACAO: 'COORDENACAO'},
     Query: {
-        users: async (root, args, { dataSources }, info) => dataSources.UserAPI.getUsers(),
+        users: async (root, args, { dataSources }, info) => dataSources.UserAPI.getUsers(args),
         user: async (root, { id }, { dataSources }, info) => dataSources.UserAPI.getUser(id)
     },
     Mutation: {
         createUser: async (root, {user}, { dataSources }, info )=> dataSources.UserAPI.createUser(user),
         editarUser: async (root, {id, user}, { dataSources }, info) => dataSources.UserAPI.editarUser(id, user),
         deletarUser: async (root, {id}, { dataSources }, info) => dataSources.UserAPI.deletarUser(id)
+    },
+    User: {
+        matricula: async (root, args, {dataSources}, info) => dataSources.MatriculasAPI.MatriculasByUserDataloader.load(root.id)
     }
 }
 

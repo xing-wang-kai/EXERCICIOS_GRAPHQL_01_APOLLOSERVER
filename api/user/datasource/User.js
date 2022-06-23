@@ -6,8 +6,12 @@ class UserAPI extends RESTDataSource{
         this.baseURL = 'http://localhost:3000';
         this.message = {code: 200, message: "sucesso!"}
     }
-    getUsers = async () => {
-        const users = await this.get('/users');
+    getUsers = async ({page=1, limit=0}) => {
+        const query = limit 
+        ? `/users?_page=${page}&_limit=${limit}`
+        :`/users?_page=${page}`;
+
+        const users = await this.get(query);
         return users.map(async (user) => ({
             id: user.id,
             nome: user.nome,

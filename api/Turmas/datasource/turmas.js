@@ -25,7 +25,7 @@ class TurmaAPI extends SQLDataSource {
     
       async createTurma(novaTurma) {
         const novaTurmaId = await this.db
-          .insert(novaTurma)
+          .insert({...novaTurma})
           .returning('id')
           .into('turmas')
       
@@ -51,8 +51,6 @@ class TurmaAPI extends SQLDataSource {
           .where({ id: Number.parseInt(id) })
           .into('turmas')
           .del()
-
-        console.log(id)
         this.message.message = "registro deletado"
         return this.message
       }

@@ -5,14 +5,14 @@ const MatriculaSchema = gql`
 
     type Matriculas{
         id: ID!
-        estudante: User
-        turma: Turmas
+        estudante_id: User
+        turma_id: Turmas
         created_at: DateTime!
         status: String!
     }
     input MatriculasInput{
-        estudante: Int
-        turma: Int
+        estudante_id: ID
+        turma_id: ID
         created_at: DateTime
         status: String
     }
